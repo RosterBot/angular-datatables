@@ -130,7 +130,7 @@ function dtDefaultRenderer($q, DTRenderer, DTRendererService, DTInstanceFactory,
         function rerender() {
             _oTable.destroy();
             DTRendererService.showLoading(_$elem);
-            render(_$elem);
+            return render(_$elem);
         }
         return renderer;
     }
@@ -263,7 +263,7 @@ function dtPromiseRenderer($q, $timeout, $log, DTRenderer, DTRendererService, DT
 
         function reloadData() {
             if (angular.isFunction(renderer.options.fnPromise)) {
-                _resolve(renderer.options.fnPromise, _redrawRows);
+                return _resolve(renderer.options.fnPromise, _redrawRows);
             } else {
                 $log.warn('In order to use the reloadData functionality with a Promise renderer, you need to provide a function that returns a promise.');
             }
@@ -271,13 +271,13 @@ function dtPromiseRenderer($q, $timeout, $log, DTRenderer, DTRendererService, DT
 
         function changeData(fnPromise) {
             renderer.options.fnPromise = fnPromise;
-            _resolve(renderer.options.fnPromise, _redrawRows);
+            return _resolve(renderer.options.fnPromise, _redrawRows);
         }
 
         function rerender() {
             _oTable.destroy();
             DTRendererService.showLoading(_$elem);
-            render(_$elem);
+            return render(_$elem);
         }
 
         function _resolve(fnPromise, callback) {
@@ -400,13 +400,13 @@ function dtAjaxRenderer($q, $timeout, DTRenderer, DTRendererService, DT_DEFAULT_
 
         function changeData(ajax) {
             renderer.options.ajax = ajax;
-            renderer.reloadData();
+            return renderer.reloadData();
         }
 
         function rerender() {
             _oTable.destroy();
             DTRendererService.showLoading(_$elem);
-            render(_$elem);
+            return render(_$elem);
         }
 
         function _doRender(options, $elem) {

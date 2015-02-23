@@ -83,16 +83,16 @@ function dtInstanceFactory() {
 
     function reloadData() {
         /*jshint validthis:true */
-        this._renderer.reloadData();
+        return this._renderer.reloadData();
     }
 
     function changeData(data) {
         /*jshint validthis:true */
-        this._renderer.changeData(data);
+        return this._renderer.changeData(data);
     }
 
     function rerender() {
         /*jshint validthis:true */
-        this._renderer.rerender();
+        return this._renderer.rerender();
     }
 }

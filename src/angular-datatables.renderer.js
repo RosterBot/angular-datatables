@@ -41,7 +41,7 @@ function dtRendererService(DTLoadingTemplate) {
 
     function renderDataTable($elem, options) {
         var dtId = '#' + $elem.attr('id');
-        if ($.fn.dataTable.isDataTable(dtId)) {
+        if ($.fn.dataTable.isDataTable(dtId) && angular.isObject(options)) {
             options.destroy = true;
         }
         // See http://datatables.net/manual/api#Accessing-the-API to understand the difference between DataTable and dataTable
@@ -173,12 +173,12 @@ function dtNGRenderer($log, $q, $compile, $timeout, DTRenderer, DTRendererServic
             var _expression = $elem.find('tbody').html();
             // Find the resources from the comment <!-- ngRepeat: item in items --> displayed by angular in the DOM
             // This regexp is inspired by the one used in the "ngRepeat" directive
-            var _match = _expression.match(/^\s*.+?\s+in\s+(\S*)\s*/);
-            var _ngRepeatAttr = _match[1];
+            var _match = _expression.match(/^\s*.+?\s+in\s+(\S*)\s*/m);
 
             if (!_match) {
                 throw new Error('Expected expression in form of "_item_ in _collection_[ track by _id_]" but got "{0}".', _expression);
             }
+            var _ngRepeatAttr = _match[1];
 
             var _alreadyRendered = false;
 
@@ -261,9 +261,17 @@ function dtPromiseRenderer($q, $timeout, $log, DTRenderer, DTRendererService, DT
             return defer.promise;
         }
 
-        function reloadData() {
+        function reloadData(callback, resetPaging) {
+            var previousPage = _oTable && _oTable.page() ? _oTable.page() : 0;
             if (angular.isFunction(renderer.options.fnPromise)) {
-                return _resolve(renderer.options.fnPromise, _redrawRows);
+                return _resolve(renderer.options.fnPromise, _redrawRows).then(function(result) {
+                    if (angular.isFunction(callback)) {
+                        callback(result.DataTable.data());
+                    }
+                    if (resetPaging === false) {
+                        result.DataTable.page(previousPage).draw(false);
+                    }
+                });
             } else {
                 $log.warn('In order to use the reloadData functionality with a Promise renderer, you need to provide a function that returns a promise.');
             }
@@ -391,22 +399,24 @@ function dtAjaxRenderer($q, $timeout, DTRenderer, DTRendererService, DT_DEFAULT_
             return defer.promise;
         }
 
-        function reloadData() {
+        function reloadData(callback, resetPaging) {
+            if (_oTable) {
+                _oTable.ajax.reload(callback, resetPaging);
+            }
+        }
+
+        function changeData(ajax) {
+            renderer.options.ajax = ajax;
             if (_oTable) {
                 var ajaxUrl = renderer.options.ajax.url ||  renderer.options.ajax;
                 _oTable.ajax.url(ajaxUrl).load();
             }
         }
 
-        function changeData(ajax) {
-            renderer.options.ajax = ajax;
-            return renderer.reloadData();
-        }
-
         function rerender() {
             _oTable.destroy();
             DTRendererService.showLoading(_$elem);
-            return render(_$elem);
+            render(_$elem);
         }
 
         function _doRender(options, $elem) {

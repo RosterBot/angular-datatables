@@ -8,7 +8,7 @@ Notes
 The required dependencies are:
 
 * [AngularJS](http://angular.org) (tested with version 1.3.0+)
-* [jQuery](http://jquery.com) (tested with version 1.11.0)
+* [jQuery](http://jquery.com) (tested with version 1.11.0+)
 * [Datatables](https://datatables.net) (tested with version 1.10+)
 
 This module has been tested with the following datatables modules:
@@ -16,6 +16,11 @@ This module has been tested with the following datatables modules:
 * [ColReorder](https://datatables.net/extras/colreorder/) with version 1.1.0
 * [ColVis](https://datatables.net/extras/colvis/) with version 1.1.0
 * [TableTools](https://datatables.net/extras/tabletools/) with version 2.2.0
+* [ColumnFilter](http://jquery-datatables-column-filter.googlecode.com/svn/trunk/index.html) with version 1.5.6
+* [FixedColumns](https://datatables.net/extensions/fixedcolumns/) with version 3.0.2
+* [FixedHeader](https://datatables.net/extensions/fixedheader/) with version 2.1.2
+* [Responsive](https://datatables.net/extensions/responsive/) with version 1.0.1
+* [Scroller](http://datatables.net/extensions/scroller/) with version 1.2.2
 
 This module also has a [Twitter Bootstrap](http://getbootstrap.com/) support (tested with version 3.1.1).
 
@@ -73,8 +78,37 @@ Additional notes
 ----------------
 
 * [RequireJS](http://requirejs.org/) is not supported.
-* A DataTable directive instance is created each time a DataTable is rendered. You can fetch it by calling the service
-`DTInstances.getLast()` to fetch the last instance or `DTInstance.getList()` to fetch the entire list of instances.
+* A DataTable directive instance is created each time a DataTable is rendered.
+ * You can use the directive `dt-instance` where you provide a variable that will be populated with the DataTable instance
+once it's rendered:
+
+```html
+<table id="foobar" datatable dt-options="dtOptions" dt-columns="dtColumns" dt-instance="dtInstance"></table>
+```
+
+The `dtInstance` variable will be populated with the following value:
+
+```json
+{
+    "id": "foobar",
+    "DataTable": oTable,
+    "dataTable": $oTable,
+    "reloadData": function(callback, resetPaging),
+    "changeData": function(newData),
+    "rerender": function()
+}
+```
+
+> DataTable is the DataTable API instance
+> dataTable is the jQuery Object
+> See http://datatables.net/manual/api#Accessing-the-API
+
+For more information, please check the [documentation](http://l-lin.github.io/angular-datatables/#/dtInstances).
+
+ * You can also fetch it by calling the service `DTInstances.getLast()` to fetch the last instance or `DTInstance.getList()`
+to fetch the entire list of instances.
+
+> These APIs are deprecated. They will be removed in the v0.5.0+. Use the above approach instead.
 
 For instance, for the given dataTables:
 
@@ -96,7 +130,7 @@ DTInstances.getLast().then(function(lastDTInstance) {
 DTInstances.getList().then(function(dtInstances) {
     /*
      * dtInstances === {
-     *      "foobar": {"id": "foobar2", "DataTable": oTable, "dataTable": $oTable},
+     *      "foobar": {"id": "foobar", "DataTable": oTable, "dataTable": $oTable},
      *      "foobar2": {"id": "foobar2", "DataTable": oTable, "dataTable": $oTable}
      * }
      */

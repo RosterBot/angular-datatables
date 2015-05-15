@@ -41,7 +41,7 @@ function dtRendererService(DTLoadingTemplate) {
 
     function renderDataTable($elem, options) {
         var dtId = '#' + $elem.attr('id');
-        if ($.fn.dataTable.isDataTable(dtId)) {
+        if ($.fn.dataTable.isDataTable(dtId) && angular.isObject(options)) {
             options.destroy = true;
         }
         // See http://datatables.net/manual/api#Accessing-the-API to understand the difference between DataTable and dataTable
@@ -69,7 +69,7 @@ function dtRendererService(DTLoadingTemplate) {
     }
 
     function postRender(options, result) {
-        plugins.forEach(function(plugin) {
+        angular.forEach(plugins, function(plugin) {
             if (angular.isFunction(plugin.postRender)) {
                 plugin.postRender(options, result);
             }
@@ -77,7 +77,7 @@ function dtRendererService(DTLoadingTemplate) {
     }
 
     function preRender(options) {
-        plugins.forEach(function(plugin) {
+        angular.forEach(plugins, function(plugin) {
             if (angular.isFunction(plugin.preRender)) {
                 plugin.preRender(options);
             }
@@ -173,12 +173,12 @@ function dtNGRenderer($log, $q, $compile, $timeout, DTRenderer, DTRendererServic
             var _expression = $elem.find('tbody').html();
             // Find the resources from the comment <!-- ngRepeat: item in items --> displayed by angular in the DOM
             // This regexp is inspired by the one used in the "ngRepeat" directive
-            var _match = _expression.match(/^\s*.+?\s+in\s+(\S*)\s*/);
-            var _ngRepeatAttr = _match[1];
+            var _match = _expression.match(/^\s*.+?\s+in\s+(\S*)\s*/m);
 
             if (!_match) {
                 throw new Error('Expected expression in form of "_item_ in _collection_[ track by _id_]" but got "{0}".', _expression);
             }
+            var _ngRepeatAttr = _match[1];
 
             var _alreadyRendered = false;
 
@@ -261,9 +261,17 @@ function dtPromiseRenderer($q, $timeout, $log, DTRenderer, DTRendererService, DT
             return defer.promise;
         }
 
-        function reloadData() {
+        function reloadData(callback, resetPaging) {
+            var previousPage = _oTable && _oTable.page() ? _oTable.page() : 0;
             if (angular.isFunction(renderer.options.fnPromise)) {
-                _resolve(renderer.options.fnPromise, _redrawRows);
+                _resolve(renderer.options.fnPromise, _redrawRows).then(function(result) {
+                    if (angular.isFunction(callback)) {
+                        callback(result.DataTable.data());
+                    }
+                    if (resetPaging === false) {
+                        result.DataTable.page(previousPage).draw(false);
+                    }
+                });
             } else {
                 $log.warn('In order to use the reloadData functionality with a Promise renderer, you need to provide a function that returns a promise.');
             }
@@ -306,7 +314,13 @@ function dtPromiseRenderer($q, $timeout, $log, DTRenderer, DTRendererService, DT
                 var data = result;
                 // In case the data is nested in an object
                 if (renderer.options.sAjaxDataProp) {
-                    data = result[renderer.options.sAjaxDataProp];
+                    var properties = renderer.options.sAjaxDataProp.split('.');
+                    while (properties.length) {
+                        var property = properties.shift();
+                        if (property in data) {
+                            data = data[property];
+                        }
+                    }
                 }
                 _loadedPromise = null;
                 defer.resolve(_doRender(renderer.options, _$elem, data, callback));
@@ -333,7 +347,7 @@ function dtPromiseRenderer($q, $timeout, $log, DTRenderer, DTRendererService, DT
 
         function _redrawRows() {
             _oTable.clear();
-            _oTable.rows.add(options.aaData).draw();
+            _oTable.rows.add(options.aaData).draw(options.redraw);
             return {
                 id: dtInstance.id,
                 DataTable: dtInstance.DataTable,
@@ -385,16 +399,18 @@ function dtAjaxRenderer($q, $timeout, DTRenderer, DTRendererService, DT_DEFAULT_
             return defer.promise;
         }
 
-        function reloadData() {
+        function reloadData(callback, resetPaging) {
             if (_oTable) {
-                var ajaxUrl = renderer.options.ajax.url ||  renderer.options.ajax;
-                _oTable.ajax.url(ajaxUrl).load();
+                _oTable.ajax.reload(callback, resetPaging);
             }
         }
 
         function changeData(ajax) {
             renderer.options.ajax = ajax;
-            renderer.reloadData();
+            if (_oTable) {
+                var ajaxUrl = renderer.options.ajax.url ||  renderer.options.ajax;
+                _oTable.ajax.url(ajaxUrl).load();
+            }
         }
 
         function rerender() {

@@ -13,11 +13,14 @@ module.exports = {
             '<%= yeoman.build %>/plugins/bootstrap/angular-datatables.bootstrap.js': ['<%= yeoman.src %>/plugins/bootstrap/*.js'],
             '<%= yeoman.build %>/plugins/colreorder/angular-datatables.colreorder.js': ['<%= yeoman.src %>/plugins/colreorder/*.js'],
             '<%= yeoman.build %>/plugins/columnfilter/angular-datatables.columnfilter.js': ['<%= yeoman.src %>/plugins/columnfilter/*.js'],
+            '<%= yeoman.build %>/plugins/light-columnfilter/angular-datatables.light-columnfilter.js': ['<%= yeoman.src %>/plugins/light-columnfilter/*.js'],
             '<%= yeoman.build %>/plugins/colvis/angular-datatables.colvis.js': ['<%= yeoman.src %>/plugins/colvis/*.js'],
             '<%= yeoman.build %>/plugins/scroller/angular-datatables.scroller.js': ['<%= yeoman.src %>/plugins/scroller/*.js'],
             '<%= yeoman.build %>/plugins/tabletools/angular-datatables.tabletools.js': ['<%= yeoman.src %>/plugins/tabletools/*.js'],
             '<%= yeoman.build %>/plugins/fixedcolumns/angular-datatables.fixedcolumns.js': ['<%= yeoman.src %>/plugins/fixedcolumns/*.js'],
-            '<%= yeoman.build %>/plugins/fixedheader/angular-datatables.fixedheader.js': ['<%= yeoman.src %>/plugins/fixedheader/*.js']
+            '<%= yeoman.build %>/plugins/fixedheader/angular-datatables.fixedheader.js': ['<%= yeoman.src %>/plugins/fixedheader/*.js'],
+            '<%= yeoman.build %>/plugins/buttons/angular-datatables.buttons.js': ['<%= yeoman.src %>/plugins/buttons/*.js'],
+            '<%= yeoman.build %>/plugins/select/angular-datatables.select.js': ['<%= yeoman.src %>/plugins/select/*.js']
         }
     },
     // Copy the source files with the banner in dist folder
@@ -27,11 +30,14 @@ module.exports = {
             '<%= yeoman.dist %>/plugins/bootstrap/angular-datatables.bootstrap.js': ['<%= yeoman.build %>/plugins/bootstrap/angular-datatables.bootstrap.js'],
             '<%= yeoman.dist %>/plugins/colreorder/angular-datatables.colreorder.js': ['<%= yeoman.build %>/plugins/colreorder/angular-datatables.colreorder.js'],
             '<%= yeoman.dist %>/plugins/columnfilter/angular-datatables.columnfilter.js': ['<%= yeoman.build %>/plugins/columnfilter/angular-datatables.columnfilter.js'],
+            '<%= yeoman.dist %>/plugins/light-columnfilter/angular-datatables.light-columnfilter.js': ['<%= yeoman.build %>/plugins/light-columnfilter/angular-datatables.light-columnfilter.js'],
             '<%= yeoman.dist %>/plugins/colvis/angular-datatables.colvis.js': ['<%= yeoman.build %>/plugins/colvis/angular-datatables.colvis.js'],
             '<%= yeoman.dist %>/plugins/scroller/angular-datatables.scroller.js': ['<%= yeoman.build %>/plugins/scroller/angular-datatables.scroller.js'],
             '<%= yeoman.dist %>/plugins/tabletools/angular-datatables.tabletools.js': ['<%= yeoman.build %>/plugins/tabletools/angular-datatables.tabletools.js'],
             '<%= yeoman.dist %>/plugins/fixedcolumns/angular-datatables.fixedcolumns.js': ['<%= yeoman.build %>/plugins/fixedcolumns/angular-datatables.fixedcolumns.js'],
-            '<%= yeoman.dist %>/plugins/fixedheader/angular-datatables.fixedheader.js': ['<%= yeoman.build %>/plugins/fixedheader/angular-datatables.fixedheader.js']
+            '<%= yeoman.dist %>/plugins/fixedheader/angular-datatables.fixedheader.js': ['<%= yeoman.build %>/plugins/fixedheader/angular-datatables.fixedheader.js'],
+            '<%= yeoman.dist %>/plugins/buttons/angular-datatables.buttons.js': ['<%= yeoman.build %>/plugins/buttons/angular-datatables.buttons.js'],
+            '<%= yeoman.dist %>/plugins/select/angular-datatables.select.js': ['<%= yeoman.build %>/plugins/select/angular-datatables.select.js']
         }
     },
     bannerCSS: {

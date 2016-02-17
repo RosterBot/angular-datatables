@@ -1,4 +1,4 @@
-angular-datatables [![Build Status](https://travis-ci.org/l-lin/angular-datatables.png?branch=master)](https://travis-ci.org/l-lin/angular-datatables) [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+angular-datatables [![Build Status](https://travis-ci.org/l-lin/angular-datatables.png?branch=master)](https://travis-ci.org/l-lin/angular-datatables) [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/) [![Stories in Ready](https://badge.waffle.io/l-lin/angular-datatables.png?label=TODO&title=TODO)](http://waffle.io/l-lin/angular-datatables)
 ================
 > Angular module that provides a `datatable` directive along with datatable options helpers.
 
@@ -33,8 +33,8 @@ Getting started
 
 The files can be downloaded from:
 
-* Minified [JS](https://raw.githubusercontent.com/l-lin/angular-datatables/master/dist/angular-datatables.min.js) and [CSS](https://raw.githubusercontent.com/l-lin/angular-datatables/master/dist/datatables.bootstrap.min.css) for production usage
-* Un-minified [JS](https://raw.githubusercontent.com/l-lin/angular-datatables/master/dist/angular-datatables.js) and [CSS](https://raw.githubusercontent.com/l-lin/angular-datatables/master/dist/datatables.bootstrap.css) for development
+* Minified [JS](https://raw.githubusercontent.com/l-lin/angular-datatables/master/dist/angular-datatables.min.js) and [CSS](https://raw.githubusercontent.com/l-lin/angular-datatables/master/dist/plugins/bootstrap/datatables.bootstrap.min.css) for production usage
+* Un-minified [JS](https://raw.githubusercontent.com/l-lin/angular-datatables/master/dist/angular-datatables.js) and [CSS](https://raw.githubusercontent.com/l-lin/angular-datatables/master/dist/plugins/bootstrap/datatables.bootstrap.css) for development
 
 > The CSS file only contains `Twitter Bootstrap` styles to support datatables.
 
@@ -104,40 +104,6 @@ The `dtInstance` variable will be populated with the following value:
 > See http://datatables.net/manual/api#Accessing-the-API
 
 For more information, please check the [documentation](http://l-lin.github.io/angular-datatables/#/dtInstances).
-
- * You can also fetch it by calling the service `DTInstances.getLast()` to fetch the last instance or `DTInstance.getList()`
-to fetch the entire list of instances.
-
-> These APIs are deprecated. They will be removed in the v0.5.0+. Use the above approach instead.
-
-For instance, for the given dataTables:
-
-```html
-<table id="foobar" datatable dt-options="dtOptions" dt-columns="dtColumns"></table>
-<table id="foobar2" datatable dt-options="dtOptions" dt-columns="dtColumns"></table>
-```
-
-You can fetch the instances like this:
-
-```js
-DTInstances.getLast().then(function(lastDTInstance) {
-    // lastDTInstance === {"id": "foobar2", "DataTable": oTable, "dataTable": $oTable}
-    
-    // loadedDT.DataTable is the DataTable API instance
-    // loadedDT.dataTable is the jQuery Object
-    // See http://datatables.net/manual/api#Accessing-the-API
-});
-DTInstances.getList().then(function(dtInstances) {
-    /*
-     * dtInstances === {
-     *      "foobar": {"id": "foobar", "DataTable": oTable, "dataTable": $oTable},
-     *      "foobar2": {"id": "foobar2", "DataTable": oTable, "dataTable": $oTable}
-     * }
-     */
-});
-```
-
-For more information, please check the [documentation](http://l-lin.github.io/angular-datatables/#/api).
 
 * `Angular Datatables` is using [Object.create()](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Object/create) to instanciate options and columns.
   * If you need to support IE8, then you need to add this [Polyfill](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create#Polyfill).

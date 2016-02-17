@@ -20,9 +20,9 @@ function RowSelect($compile, $scope, $resource, DTOptionsBuilder, DTColumnBuilde
             $compile(angular.element(row).contents())($scope);
         })
         .withOption('headerCallback', function(header) {
-            if (!$scope.headerCompiled) {
+            if (!vm.headerCompiled) {
                 // Use this headerCompiled field to only compile header once
-                $scope.headerCompiled = true;
+                vm.headerCompiled = true;
                 $compile(angular.element(header).contents())($scope);
             }
         })
@@ -46,15 +46,14 @@ function RowSelect($compile, $scope, $resource, DTOptionsBuilder, DTColumnBuilde
         }
     }
     function toggleOne (selectedItems) {
-        var me = this;
         for (var id in selectedItems) {
             if (selectedItems.hasOwnProperty(id)) {
                 if(!selectedItems[id]) {
-                    me.selectAll = false;
+                    vm.selectAll = false;
                     return;
                 }
             }
         }
-        me.selectAll = true;
+        vm.selectAll = true;
     }
 }

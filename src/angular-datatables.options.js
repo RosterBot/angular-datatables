@@ -8,11 +8,14 @@ angular.module('datatables.options', [])
         // Set default columns (used when none are provided)
         aoColumns: []
     })
+    .constant('DT_LOADING_CLASS', 'dt-loading')
     .service('DTDefaultOptions', dtDefaultOptions);
 
 function dtDefaultOptions() {
     var options = {
+        loadingTemplate: '<h3>Loading...</h3>',
         bootstrapOptions: {},
+        setLoadingTemplate: setLoadingTemplate,
         setLanguageSource: setLanguageSource,
         setLanguage: setLanguage,
         setDisplayLength: setDisplayLength,
@@ -22,14 +25,30 @@ function dtDefaultOptions() {
     return options;
 
     /**
+     * Set the default loading template
+     * @param loadingTemplate the HTML to display when loading the table
+     * @returns {DTDefaultOptions} the default option config
+     */
+    function setLoadingTemplate(loadingTemplate) {
+        options.loadingTemplate = loadingTemplate;
+        return options;
+    }
+
+    /**
      * Set the default language source for all datatables
      * @param sLanguageSource the language source
      * @returns {DTDefaultOptions} the default option config
      */
     function setLanguageSource(sLanguageSource) {
-        $.extend($.fn.dataTable.defaults, {
-            oLanguage: {
-                sUrl: sLanguageSource
+        // HACK to resolve the language source manually instead of DT
+        // See https://github.com/l-lin/angular-datatables/issues/356
+        $.ajax({
+            dataType: 'json',
+            url: sLanguageSource,
+            success: function(json) {
+                $.extend(true, $.fn.dataTable.defaults, {
+                    oLanguage: json
+                });
             }
         });
         return options;

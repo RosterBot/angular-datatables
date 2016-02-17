@@ -13,6 +13,7 @@ angular.module('showcase', [
     'showcase.dataReload.withPromise',
     'showcase.disableDeepWatchers',
     'showcase.loadOptionsWithPromise',
+    'showcase.angularDirectiveInDOM',
     'showcase.rerender',
     'showcase.rowClickEvent',
     'showcase.rowSelect',
@@ -23,12 +24,15 @@ angular.module('showcase', [
     'showcase.withAngularTranslate',
     'showcase.withColReorder',
     'showcase.withColumnFilter',
+    'showcase.withLightColumnFilter',
     'showcase.withColVis',
     'showcase.withResponsive',
     'showcase.withScroller',
     'showcase.withTableTools',
     'showcase.withFixedColumns',
     'showcase.withFixedHeader',
+    'showcase.withButtons',
+    'showcase.withSelect',
     'showcase.dtInstances',
 
     'showcase.usages',
@@ -39,7 +43,7 @@ angular.module('showcase', [
 .config(sampleConfig)
 .config(routerConfig)
 .config(translateConfig)
-.factory('DTLoadingTemplate', dtLoadingTemplate);
+.run(initDT);
 
 backToTop.init({
     theme: 'classic', // Available themes: 'classic', 'sky', 'slate'
@@ -98,11 +102,14 @@ function translateConfig($translateProvider) {
         firstName: 'First name with angular-translate',
         lastName: 'Last name with angular-translate'
     });
+    $translateProvider.translations('fr', {
+        id: 'ID avec angular-translate',
+        firstName: 'Prénom avec angular-translate',
+        lastName: 'Nom avec angular-translate'
+    });
     $translateProvider.preferredLanguage('en');
 }
 
-function dtLoadingTemplate() {
-    return {
-        html: '<img src="/angular-datatables/images/loading.gif" />'
-    };
+function initDT(DTDefaultOptions) {
+    DTDefaultOptions.setLoadingTemplate('<img src="/angular-datatables/images/loading.gif" />');
 }

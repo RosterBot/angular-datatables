@@ -1,8 +1,11 @@
 /*!
- * angular-datatables - v0.4.3
+ * angular-datatables - v0.5.3
  * https://github.com/l-lin/angular-datatables
  * License: MIT
  */
+if (typeof module !== "undefined" && typeof exports !== "undefined" && module.exports === exports) {
+   module.exports = 'datatables.bootstrap';
+}
 (function (window, document, $, angular) {
 
 'use strict';

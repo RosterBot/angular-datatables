@@ -241,7 +241,9 @@ function dtColumnBuilder() {
             }
             var column = Object.create(DTColumn);
             column.mData = mData;
-            column.sTitle = sTitle ||  '';
+            if (angular.isDefined(sTitle)) {
+                column.sTitle = sTitle;
+            }
             return column;
         },
         DTColumn: DTColumn
@@ -266,8 +268,13 @@ function dtColumnDefBuilder(DTColumnBuilder) {
     };
 }
 
-function dtLoadingTemplate() {
+function dtLoadingTemplate($compile, DTDefaultOptions, DT_LOADING_CLASS) {
     return {
-        html: '<h3 class="dt-loading">Loading...</h3>'
+        compileHtml: function($scope) {
+            return $compile(angular.element('<div class="' + DT_LOADING_CLASS + '">' + DTDefaultOptions.loadingTemplate + '</div>'))($scope);
+        },
+        isLoading: function(elem) {
+            return elem.hasClass(DT_LOADING_CLASS);
+        }
     };
 }

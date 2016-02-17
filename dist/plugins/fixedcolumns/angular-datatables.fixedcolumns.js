@@ -1,16 +1,18 @@
 /*!
- * angular-datatables - v0.4.3
+ * angular-datatables - v0.5.3
  * https://github.com/l-lin/angular-datatables
  * License: MIT
  */
+if (typeof module !== "undefined" && typeof exports !== "undefined" && module.exports === exports) {
+   module.exports = 'datatables.fixedcolumns';
+}
 (function (window, document, $, angular) {
 
 'use strict';
 
 // See https://datatables.net/extensions/fixedcolumns/
 angular.module('datatables.fixedcolumns', ['datatables'])
-    .config(dtFixedColumnsConfig)
-    .run(initFixedColumnsPlugin);
+    .config(dtFixedColumnsConfig);
 
 /* @ngInject */
 function dtFixedColumnsConfig($provide) {
@@ -44,9 +46,9 @@ function dtFixedColumnsConfig($provide) {
              * @returns {DTOptions} the options
              */
             function withFixedColumns(fixedColumnsOptions) {
-                options.hasFixedColumns = true;
+                options.fixedColumns = true;
                 if (fixedColumnsOptions) {
-                    options.fixedColumnsOptions = fixedColumnsOptions;
+                    options.fixedColumns = fixedColumnsOptions;
                 }
                 return options;
             }
@@ -55,21 +57,6 @@ function dtFixedColumnsConfig($provide) {
     dtOptionsBuilderDecorator.$inject = ['$delegate'];
 }
 dtFixedColumnsConfig.$inject = ['$provide'];
-
-/* @ngInject */
-function initFixedColumnsPlugin(DTRendererService) {
-    var fixedColumnsPlugin = {
-        postRender: postRender
-    };
-    DTRendererService.registerPlugin(fixedColumnsPlugin);
-
-    function postRender(options, result) {
-        if (options && options.hasFixedColumns) {
-            new $.fn.dataTable.FixedColumns(result.DataTable, options.fixedColumnsOptions);
-        }
-    }
-}
-initFixedColumnsPlugin.$inject = ['DTRendererService'];
 
 
 })(window, document, jQuery, angular);

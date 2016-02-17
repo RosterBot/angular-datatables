@@ -24,8 +24,17 @@ angular.module('showcase.usages', ['ngResource'])
         label: 'Custom HTML loading'
     }],
     advanced: [{
-        name: 'dtInstances',
-        label: 'Fetching DataTable instances'
+        name: 'angularDirectiveInDOM',
+        label: 'Angular directive in DOM'
+    }, {
+        name: 'bindAngularDirective',
+        label: 'Bind Angular directive'
+    }, {
+        name: 'angularWayDataChange',
+        label: 'Change data with the Angular way'
+    }, {
+        name: 'changeOptions',
+        label: 'Change options'
     }, {
         name: 'dataReloadWithAjax',
         label: 'Data reload with Ajax'
@@ -33,14 +42,14 @@ angular.module('showcase.usages', ['ngResource'])
         name: 'dataReloadWithPromise',
         label: 'Data reload with promise'
     }, {
+        name: 'disableDeepWatchers',
+        label: 'Disable deep watchers'
+    }, {
+        name: 'dtInstances',
+        label: 'Fetching DataTable instances'
+    }, {
         name: 'rerender',
         label: 'Re-render a table'
-    }, {
-        name: 'serverSideProcessing',
-        label: 'Server side processing'
-    }, {
-        name: 'angularWayDataChange',
-        label: 'Change data with the Angular way'
     }, {
         name: 'rowClickEvent',
         label: 'Row click event'
@@ -48,45 +57,36 @@ angular.module('showcase.usages', ['ngResource'])
         name: 'rowSelect',
         label: 'Selecting rows'
     }, {
-        name: 'bindAngularDirective',
-        label: 'Bind Angular directive'
-    }, {
-        name: 'changeOptions',
-        label: 'Change options'
+        name: 'serverSideProcessing',
+        label: 'Server side processing'
     }, {
         name: 'loadOptionsWithPromise',
         label: 'Load DT options with promise'
-    }, {
-        name: 'disableDeepWatchers',
-        label: 'Disable deep watchers'
     }],
-    withPlugins: [{
-        name: 'withColReorder',
-        label: 'With ColReorder'
+    withPlugins: [ {
+        name: 'withAngularTranslate',
+        label: 'With Angular Translate'
     }, {
-        name: 'withColVis',
-        label: 'With ColVis'
+        name: 'withAngularTranslateSwitchLanguage',
+        label: 'Switch language with Angular Translate'
     }, {
-        name: 'withTableTools',
-        label: 'With TableTools'
+        name: 'withButtons',
+        label: 'With Buttons'
     }, {
-        name: 'withResponsive',
-        label: 'With Responsive'
-    }, {
-        name: 'withScroller',
-        label: 'With Scroller'
-    }, {
-        name: 'withColumnFilter',
-        label: 'With Column Filter'
-    },{
         name: 'bootstrapIntegration',
         label: 'Bootstrap integration'
     }, {
         name: 'overrideBootstrapOptions',
         label: 'Override Bootstrap options'
     }, {
-        name: 'withAngularTranslate',
-        label: 'With Angular Translate'
+        name: 'withColumnFilter',
+        label: 'With Column Filter'
+    }, {
+        name: 'withColReorder',
+        label: 'With ColReorder'
+    }, {
+        name: 'withColVis',
+        label: 'With ColVis [deprecated]'
     }, {
         name: 'withFixedColumns',
         label: 'With Fixed Columns'
@@ -99,5 +99,20 @@ angular.module('showcase.usages', ['ngResource'])
             var fixedFooterEle = document.getElementsByClassName('fixedFooter');
             angular.element(fixedFooterEle).remove();
         }
+    }, {
+        name: 'withLightColumnFilter',
+        label: 'With Light Column Filter'
+    }, {
+        name: 'withResponsive',
+        label: 'With Responsive'
+    }, {
+        name: 'withSelect',
+        label: 'With Select'
+    }, {
+        name: 'withScroller',
+        label: 'With Scroller'
+    }, {
+        name: 'withTableTools',
+        label: 'With TableTools [deprecated]'
     }]
 });

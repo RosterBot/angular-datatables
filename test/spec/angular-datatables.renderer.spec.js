@@ -4,11 +4,10 @@ describe('datatables.renderer', function () {
     beforeEach(module('datatables.renderer'));
 
     describe('DTRendererService', function () {
-        var DTRendererService, $loading, $elem, $scope, DTInstances;
+        var DTRendererService, $loading, $elem, $scope;
 
         beforeEach(inject(function ($injector, $rootScope) {
             DTRendererService = $injector.get('DTRendererService');
-            $loading = DTRendererService.getLoadingElem();
             $elem = $(
                     '<table id="foobar">' +
                     '   <thead>' +
@@ -22,7 +21,6 @@ describe('datatables.renderer', function () {
                     '</table>'
             );
             $scope = $rootScope.$new();
-            DTInstances = $injector.get('DTInstances');
         }));
 
         describe(', when showing the loading,', function () {
@@ -33,22 +31,21 @@ describe('datatables.renderer', function () {
             });
 
             it('should hide the given element and show the loading', function () {
-                DTRendererService.showLoading($elem);
-                expect($elem.after).toHaveBeenCalledWith($loading);
+                DTRendererService.showLoading($elem, $scope);
+                expect($elem.after).toHaveBeenCalled();
                 expect($elem.hide).toHaveBeenCalled();
-                expect($loading.show).toHaveBeenCalled();
             });
         });
         describe(', when hiding the loading,', function () {
             beforeEach(function () {
                 spyOn($.fn, 'show').andCallThrough();
-                spyOn($.fn, 'hide').andCallThrough();
+                spyOn($.fn, 'remove').andCallThrough();
             });
 
             it('should show the given element and hide the loading', function () {
                 DTRendererService.hideLoading($elem);
                 expect($elem.show).toHaveBeenCalled();
-                expect($loading.hide).toHaveBeenCalled();
+                expect($elem.next().remove).toHaveBeenCalled();
             });
         });
         describe(', when rendering the DataTable and registring the instance,', function () {
@@ -56,7 +53,6 @@ describe('datatables.renderer', function () {
             beforeEach(function () {
                 options = {};
                 spyOn($.fn, 'attr').andCallThrough();
-                spyOn(DTInstances, 'register');
                 result = DTRendererService.renderDataTable($elem, options, {});
             });
             it('should retrieve the id of the element', function () {

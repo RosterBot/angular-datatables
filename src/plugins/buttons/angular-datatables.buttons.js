@@ -6,7 +6,7 @@ angular.module('datatables.buttons', ['datatables'])
     .run(initButtonsPlugin);
 
 /* @ngInject */
-function dtButtonsConfig($provide, DT_DEFAULT_OPTIONS) {
+function dtButtonsConfig($provide) {
     $provide.decorator('DTOptionsBuilder', dtOptionsBuilderDecorator);
 
     function dtOptionsBuilderDecorator($delegate) {
@@ -38,7 +38,7 @@ function dtButtonsConfig($provide, DT_DEFAULT_OPTIONS) {
              */
             function withButtons(buttonsOptions) {
                 var buttonsPrefix = 'B';
-                options.dom = options.dom ? options.dom : DT_DEFAULT_OPTIONS.dom;
+                options.dom = options.dom ? options.dom : $.fn.dataTable.defaults.sDom;
                 if (options.dom.indexOf(buttonsPrefix) === -1) {
                     options.dom = buttonsPrefix + options.dom;
                 }
@@ -61,7 +61,7 @@ function initButtonsPlugin(DTRendererService) {
     DTRendererService.registerPlugin(buttonsPlugin);
 
     function preRender(options) {
-        if (angular.isArray(options.buttons)) {
+        if (options && angular.isArray(options.buttons)) {
             // The extension buttons seems to clear the content of the options.buttons for some reasons...
             // So, we save it in a tmp variable so that we can restore it afterwards
             // See https://github.com/l-lin/angular-datatables/issues/502
@@ -70,7 +70,7 @@ function initButtonsPlugin(DTRendererService) {
     }
 
     function postRender(options) {
-        if (angular.isDefined(options.buttonsTmp)) {
+        if (options && angular.isDefined(options.buttonsTmp)) {
             // Restore the buttons options
             options.buttons = options.buttonsTmp;
             delete options.buttonsTmp;
